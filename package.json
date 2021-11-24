@@ -43,6 +43,11 @@
     "simple-git-hooks": "^2.7.0",
     "typescript": "^4.3.4"
   },
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "multitude": "^0.0.8",
+    "type-core": "^0.12.0"
+  },
   "simple-git-hooks": {
     "pre-commit": "kpo validate"
   }
