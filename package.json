@@ -1,0 +1,49 @@
+{
+  "name": "resilient-policies",
+  "description": "Simple policies for resiliency",
+  "version": "0.0.0",
+  "author": "Rafa Mel",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "main": "pkg/dist",
+  "types": "pkg/dist",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "node": "kpo node --",
+    "build": "kpo build --",
+    "tarball": "kpo tarball --",
+    "docs": "kpo docs --",
+    "fix": "kpo fix --",
+    "lint": "kpo lint --",
+    "test": "kpo test --",
+    "commit": "kpo commit --",
+    "release": "kpo release --",
+    "distribute": "kpo distribute --",
+    "validate": "kpo validate --",
+    "prepare": "kpo prepare --",
+    "version": "kpo version --"
+  },
+  "homepage": "https://github.com/rafamel/resilient-policies",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafamel/resilient-policies"
+  },
+  "bugs": {
+    "url": "https://github.com/rafamel/resilient-policies/issues"
+  },
+  "devDependencies": {
+    "@jest/globals": "^27.0.3",
+    "@riseup/library": "^0.13.1",
+    "kpo": "^0.22.0",
+    "simple-git-hooks": "^2.7.0",
+    "typescript": "^4.3.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "kpo validate"
+  }
+}

@@ -1,0 +1,13 @@
+pkg
+build
+deploy
+vendor
+lib
+dist
+out
+public
+coverage
+.vscode
+.cache
+node_modules
+*.md
