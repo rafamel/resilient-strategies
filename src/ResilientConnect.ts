@@ -35,7 +35,7 @@ export class ResilientConnect<T> implements Connect<T> {
     this.#policy = new ResilientPolicy(...strategies);
     this.#controller = null;
     this.#events$ = new Subject();
-    this.#negotiation$ = new Subject();
+    this.#negotiation$ = new Subject({ replay: 1 });
   }
   public get events$(): Push.Observable<Connect.Event> {
     return Observable.from(this.#events$);
@@ -43,8 +43,45 @@ export class ResilientConnect<T> implements Connect<T> {
   public get negotiation$(): Push.Observable<Connect.Negotiation<T> | null> {
     return Observable.from(this.#negotiation$);
   }
-  public negotiation(): Connect.Negotiation<T> | null {
-    return this.#negotiation$.value || null;
+  public async query(): Promise<Connect.Negotiation<T>> {
+    const value = this.#negotiation$.value;
+    if (value) return value;
+
+    if (!this.#controller) {
+      throw Error(`Connection process did stop`);
+    }
+
+    return new Promise((resolve, reject) => {
+      const subscriptions: Push.Subscription[] = [];
+
+      const unsubscribe = (): void => {
+        return subscriptions.forEach((subs) => {
+          return subs.unsubscribe();
+        });
+      };
+
+      this.#negotiation$.subscribe({
+        start: (subs) => subscriptions.push(subs),
+        next: (negotiation) => {
+          if (!negotiation) return;
+
+          unsubscribe();
+          resolve(negotiation);
+        }
+      });
+
+      this.#events$.subscribe({
+        start: (subs) => subscriptions.push(subs),
+        next: (ev) => {
+          if (ev.type !== 'error' && ev.type !== 'stop') return;
+
+          unsubscribe();
+          ev.type === 'error'
+            ? reject(ev.error)
+            : reject(Error('Connection process did stop'));
+        }
+      });
+    });
   }
   public connect(): void {
     if (this.#controller) return;
@@ -64,7 +101,7 @@ export class ResilientConnect<T> implements Connect<T> {
       const sub = uuid();
       this.#negotiation$.next({
         sub,
-        get isOpen() {
+        get open() {
           return isOpen;
         },
         connection: adapter.connection

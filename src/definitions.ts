@@ -64,8 +64,8 @@ export interface Connect<T> {
   events$: Push.Observable<Connect.Event>;
   /** Negotiation observable */
   negotiation$: Push.Observable<Connect.Negotiation<T> | null>;
-  /** Gets current negotiation */
-  negotiation(): Connect.Negotiation<T> | null;
+  /** Negotiation promise */
+  query(): Promise<Connect.Negotiation<T>>;
   /** Starts the connection process. */
   connect(): void;
   /** Stops the connection process and closes any connection. */
@@ -79,7 +79,7 @@ export declare namespace Connect {
 
   interface Negotiation<T> {
     sub: string;
-    isOpen: boolean;
+    open: boolean;
     connection: T;
   }
 }
