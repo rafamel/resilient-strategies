@@ -1,13 +1,13 @@
-# resilient-policies
+# resilient-strategies
 
-[![Version](https://img.shields.io/npm/v/resilient-policies.svg)](https://www.npmjs.com/package/resilient-policies)
-[![Dependencies](https://img.shields.io/david/rafamel/resilient-policies.svg)](https://david-dm.org/rafamel/resilient-policies)
-[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/resilient-policies.svg)](https://snyk.io/test/npm/resilient-policies)
-[![License](https://img.shields.io/github/license/rafamel/resilient-policies.svg)](https://github.com/rafamel/resilient-policies/blob/master/LICENSE)
-[![Types](https://img.shields.io/npm/types/resilient-policies.svg)](https://www.npmjs.com/package/resilient-policies)
+[![Version](https://img.shields.io/npm/v/resilient-strategies.svg)](https://www.npmjs.com/package/resilient-strategies)
+[![Dependencies](https://img.shields.io/david/rafamel/resilient-strategies.svg)](https://david-dm.org/rafamel/resilient-strategies)
+[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/resilient-strategies.svg)](https://snyk.io/test/npm/resilient-strategies)
+[![License](https://img.shields.io/github/license/rafamel/resilient-strategies.svg)](https://github.com/rafamel/resilient-strategies/blob/master/LICENSE)
+[![Types](https://img.shields.io/npm/types/resilient-strategies.svg)](https://www.npmjs.com/package/resilient-strategies)
 
-> Simple policies for resiliency
+> Simple strategies for resiliency
 
 ## Install
 
-[`npm install resilient-policies`](https://www.npmjs.com/package/resilient-policies)
+[`npm install resilient-strategies`](https://www.npmjs.com/package/resilient-strategies)

@@ -1,6 +1,6 @@
 {
-  "name": "resilient-policies",
-  "description": "Simple policies for resiliency",
+  "name": "resilient-strategies",
+  "description": "Simple strategies for resiliency",
   "version": "0.0.0",
   "author": "Rafa Mel",
   "license": "MIT",
@@ -28,13 +28,13 @@
     "prepare": "kpo prepare --",
     "version": "kpo version --"
   },
-  "homepage": "https://github.com/rafamel/resilient-policies",
+  "homepage": "https://github.com/rafamel/resilient-strategies",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rafamel/resilient-policies"
+    "url": "https://github.com/rafamel/resilient-strategies"
   },
   "bugs": {
-    "url": "https://github.com/rafamel/resilient-policies/issues"
+    "url": "https://github.com/rafamel/resilient-strategies/issues"
   },
   "devDependencies": {
     "@jest/globals": "^27.0.3",
