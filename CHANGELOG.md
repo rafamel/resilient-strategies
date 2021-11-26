@@ -1,4 +1,13 @@
-# 0.1.0 (2021-11-26)
+# [0.2.0](https://github.com/rafamel/resilient-strategies/compare/v0.1.0...v0.2.0) (2021-11-26)
+
+
+### Features
+
+* removes Connect.negotiation method in favor of promise returning Connect.query method ([8f0adb4](https://github.com/rafamel/resilient-strategies/commit/8f0adb40cfc98bad730894af0221f9869c4bba66))
+
+
+
+# [0.1.0](https://github.com/rafamel/resilient-strategies/compare/0caf1aeb0ab0bd2d2ebe482b1238239e2d23ebe7...v0.1.0) (2021-11-26)
 
 
 ### Features
