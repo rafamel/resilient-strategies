@@ -20,11 +20,8 @@ export declare namespace Policy {
     response(): Promise<O>;
   }
   type Event =
-    | { id: string; type: 'cancel' }
-    | { id: string; type: 'start' }
-    | { id: string; type: 'stop' }
-    | { id: string; type: 'warn'; error: Error }
-    | { id: string; type: 'error'; error: Error };
+    | { id: string; type: 'start' | 'stop' | 'cancel' }
+    | { id: string; type: 'warn' | 'error'; error: Error };
 }
 
 export interface Executor<I, O> {
@@ -60,4 +57,29 @@ export declare namespace Storage {
   type Response<T> =
     | { key: string; exists: true; value: T }
     | { key: string; exists: false; value?: null };
+}
+
+export interface Connect<T> {
+  /** Events observable */
+  events$: Push.Observable<Connect.Event>;
+  /** Negotiation observable */
+  negotiation$: Push.Observable<Connect.Negotiation<T> | null>;
+  /** Gets current negotiation */
+  negotiation(): Connect.Negotiation<T> | null;
+  /** Starts the connection process. */
+  connect(): void;
+  /** Stops the connection process and closes any connection. */
+  disconnect(): void;
+}
+export declare namespace Connect {
+  type Event =
+    | { id: string; type: 'start' | 'stop' | 'cancel' }
+    | { id: string; type: 'opening' | 'open' | 'closing' | 'close' }
+    | { id: string; type: 'warn' | 'error'; error: Error };
+
+  interface Negotiation<T> {
+    sub: string;
+    isOpen: boolean;
+    connection: T;
+  }
 }

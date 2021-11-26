@@ -12,17 +12,22 @@ export class Util {
   public static onAbort(fn: NullaryFn, signal?: AbortSignal): NullaryFn {
     if (!signal) return Util.noop;
 
-    function listener(): void {
-      if (signal) {
+    if (signal.aborted) {
+      fn();
+      return Util.noop;
+    } else {
+      function listener(): void {
+        if (!signal) return;
+
         signal.removeEventListener('abort', listener);
         fn();
       }
-    }
 
-    signal.addEventListener('abort', listener);
-    return () => {
-      signal.removeEventListener('abort', listener);
-    };
+      signal.addEventListener('abort', listener);
+      return () => {
+        signal.removeEventListener('abort', listener);
+      };
+    }
   }
   public static throwIfAbort(signal?: AbortSignal): void {
     if (signal && signal.aborted) {
