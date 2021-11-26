@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/rafamel/resilient-strategies/compare/v0.2.0...v0.3.0) (2021-11-26)
+
+
+### Features
+
+* add Connection.state getter ([09431a4](https://github.com/rafamel/resilient-strategies/commit/09431a4222c3398d1bb4a3f03f25cee20231e456))
+
+
+
 # [0.2.0](https://github.com/rafamel/resilient-strategies/compare/v0.1.0...v0.2.0) (2021-11-26)
 
 
