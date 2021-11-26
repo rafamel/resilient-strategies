@@ -25,6 +25,7 @@ export class ResilientConnect<T> implements Connect<T> {
   #execute: NullaryFn<Promise<ResilientConnect.Adapter<T>>>;
   #policy: Policy;
   #controller: AbortController | null;
+  #getState: NullaryFn<Connect.State>;
   #events$: Push.Subject<Connect.Event>;
   #negotiation$: Push.Subject<Connect.Negotiation<T> | null>;
   public constructor(
@@ -34,8 +35,12 @@ export class ResilientConnect<T> implements Connect<T> {
     this.#execute = async () => executor();
     this.#policy = new ResilientPolicy(...strategies);
     this.#controller = null;
+    this.#getState = () => 'close';
     this.#events$ = new Subject();
     this.#negotiation$ = new Subject({ replay: 1 });
+  }
+  public get state(): Connect.State {
+    return this.#getState();
   }
   public get events$(): Push.Observable<Connect.Event> {
     return Observable.from(this.#events$);
@@ -78,7 +83,7 @@ export class ResilientConnect<T> implements Connect<T> {
           unsubscribe();
           ev.type === 'error'
             ? reject(ev.error)
-            : reject(Error('Connection process did stop'));
+            : reject(Error(`Connection process did stop`));
         }
       });
     });
@@ -90,6 +95,8 @@ export class ResilientConnect<T> implements Connect<T> {
     let didLastClose = true;
     const controller = new AbortController();
     const { id, events$ } = this.#policy.execute(async () => {
+      let state: Connect.State = 'opening';
+      this.#getState = () => state;
       if (didLastOpen) this.#events$.next({ id, type: 'opening' });
 
       didLastOpen = false;
@@ -97,15 +104,15 @@ export class ResilientConnect<T> implements Connect<T> {
       const adapter = await this.#execute();
       didLastOpen = true;
 
-      let isOpen = true;
       const sub = uuid();
       this.#negotiation$.next({
         sub,
-        get open() {
-          return isOpen;
+        get state() {
+          return state;
         },
         connection: adapter.connection
       });
+      state = 'open';
       this.#events$.next({ id, type: 'open' });
 
       adapter.onWarn((err) => {
@@ -114,13 +121,11 @@ export class ResilientConnect<T> implements Connect<T> {
 
       let teardown: null | NullaryFn = null;
       const promise = new Promise<void>((resolve, reject) => {
-        let didClose = false;
         adapter.onClose((err) => {
-          if (didClose) return;
+          if (state === 'close') return;
 
-          isOpen = false;
-          didClose = true;
           didLastClose = true;
+          state = 'close';
           this.#events$.next({ id, type: 'close' });
           if (teardown) teardown();
           if (this.#negotiation$.value?.sub === sub) {
@@ -137,11 +142,11 @@ export class ResilientConnect<T> implements Connect<T> {
         });
       });
 
-      if (isOpen) {
+      if (state === 'open') {
         teardown = Util.onAbort(() => {
-          if (!isOpen) return;
+          if (state !== 'open') return;
 
-          isOpen = false;
+          state = 'closing';
           this.#events$.next({ id, type: 'closing' });
           if (this.#negotiation$.value?.sub === sub) {
             this.#negotiation$.next(null);

@@ -60,6 +60,8 @@ export declare namespace Storage {
 }
 
 export interface Connect<T> {
+  /** Current connection state */
+  state: Connect.State;
   /** Events observable */
   events$: Push.Observable<Connect.Event>;
   /** Negotiation observable */
@@ -72,14 +74,16 @@ export interface Connect<T> {
   disconnect(): void;
 }
 export declare namespace Connect {
+  type State = 'opening' | 'open' | 'closing' | 'close';
+
   type Event =
+    | { id: string; type: State }
     | { id: string; type: 'start' | 'stop' | 'cancel' }
-    | { id: string; type: 'opening' | 'open' | 'closing' | 'close' }
     | { id: string; type: 'warn' | 'error'; error: Error };
 
   interface Negotiation<T> {
     sub: string;
-    open: boolean;
+    state: State;
     connection: T;
   }
 }
