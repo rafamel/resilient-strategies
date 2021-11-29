@@ -1,3 +1,13 @@
+# [0.4.0](https://github.com/rafamel/resilient-strategies/compare/v0.3.0...v0.4.0) (2021-11-29)
+
+
+### Features
+
+* add group property to events ([bd2869c](https://github.com/rafamel/resilient-strategies/commit/bd2869c481c54ac0f2e3c72cc57d28c09373bd85))
+* add string[] to Storage type methods by default ([d64bd65](https://github.com/rafamel/resilient-strategies/commit/d64bd65aed4a6c603e71b9df2906d78e74649392))
+
+
+
 # [0.3.0](https://github.com/rafamel/resilient-strategies/compare/v0.2.0...v0.3.0) (2021-11-26)
 
 

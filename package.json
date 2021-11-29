@@ -1,7 +1,7 @@
 {
   "name": "resilient-strategies",
   "description": "Simple strategies for resiliency",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Rafa Mel",
   "license": "MIT",
   "publishConfig": {
