@@ -62,7 +62,7 @@ export class Util {
 
           if (!didStart) {
             didStart = true;
-            onEvent({ id, type: 'start' });
+            onEvent({ id, group: 'execution', type: 'start', data: null });
           }
 
           return cb().catch((err) => {
@@ -72,8 +72,9 @@ export class Util {
               if (!errEnd || errEnd[0] !== err) {
                 onEvent({
                   id,
+                  group: 'exception',
                   type: 'warn',
-                  error: ensure(err, Error)
+                  data: ensure(err, Error)
                 });
               }
             };
@@ -94,12 +95,14 @@ export class Util {
           triggerAll();
 
           const error = ensure(err, Error);
-          onEvent({ id, type: 'error', error });
+          onEvent({ id, group: 'exception', type: 'error', data: error });
           throw error;
         }
       )
       .finally(() => {
-        if (didStart) onEvent({ id, type: 'stop' });
+        if (didStart) {
+          onEvent({ id, group: 'execution', type: 'stop', data: null });
+        }
       });
   }
 }

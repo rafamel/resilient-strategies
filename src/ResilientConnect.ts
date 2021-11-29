@@ -82,7 +82,7 @@ export class ResilientConnect<T> implements Connect<T> {
 
           unsubscribe();
           ev.type === 'error'
-            ? reject(ev.error)
+            ? reject(ev.data)
             : reject(Error(`Connection process did stop`));
         }
       });
@@ -97,7 +97,9 @@ export class ResilientConnect<T> implements Connect<T> {
     const { id, events$ } = this.#policy.execute(async () => {
       let state: Connect.State = 'opening';
       this.#getState = () => state;
-      if (didLastOpen) this.#events$.next({ id, type: 'opening' });
+      if (didLastOpen) {
+        this.#events$.next({ id, group: 'state', type: 'opening', data: null });
+      }
 
       didLastOpen = false;
       didLastClose = false;
@@ -113,10 +115,15 @@ export class ResilientConnect<T> implements Connect<T> {
         connection: adapter.connection
       });
       state = 'open';
-      this.#events$.next({ id, type: 'open' });
+      this.#events$.next({ id, group: 'state', type: 'open', data: null });
 
       adapter.onWarn((err) => {
-        this.#events$.next({ id, type: 'warn', error: ensure(err) });
+        this.#events$.next({
+          id,
+          group: 'exception',
+          type: 'warn',
+          data: ensure(err)
+        });
       });
 
       let teardown: null | NullaryFn = null;
@@ -126,7 +133,7 @@ export class ResilientConnect<T> implements Connect<T> {
 
           didLastClose = true;
           state = 'close';
-          this.#events$.next({ id, type: 'close' });
+          this.#events$.next({ id, group: 'state', type: 'close', data: null });
           if (teardown) teardown();
           if (this.#negotiation$.value?.sub === sub) {
             this.#negotiation$.next(null);
@@ -147,7 +154,12 @@ export class ResilientConnect<T> implements Connect<T> {
           if (state !== 'open') return;
 
           state = 'closing';
-          this.#events$.next({ id, type: 'closing' });
+          this.#events$.next({
+            id,
+            group: 'state',
+            type: 'closing',
+            data: null
+          });
           if (this.#negotiation$.value?.sub === sub) {
             this.#negotiation$.next(null);
           }
@@ -159,13 +171,18 @@ export class ResilientConnect<T> implements Connect<T> {
     }, controller.signal);
 
     this.#controller = controller;
-    this.#events$.next({ id, type: 'start' });
+    this.#events$.next({ id, group: 'execution', type: 'start', data: null });
     events$.subscribe((event) => {
       const { type } = event;
 
       if (!didLastClose && ['error', 'stop'].includes(type)) {
         didLastClose = true;
-        this.#events$.next({ id: event.id, type: 'close' });
+        this.#events$.next({
+          id: event.id,
+          group: 'state',
+          type: 'close',
+          data: null
+        });
       }
 
       if (['cancel', 'stop'].includes(type)) {

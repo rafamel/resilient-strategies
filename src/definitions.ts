@@ -19,9 +19,10 @@ export declare namespace Policy {
     events$: Push.Observable<Event>;
     response(): Promise<O>;
   }
+
   type Event =
-    | { id: string; type: 'start' | 'stop' | 'cancel' }
-    | { id: string; type: 'warn' | 'error'; error: Error };
+    | Event.Type<string, 'execution', 'start' | 'stop' | 'cancel'>
+    | Event.Type<string, 'exception', 'warn' | 'error', Error>;
 }
 
 export interface Executor<I, O> {
@@ -38,10 +39,11 @@ export declare namespace Executor {
     response(): Promise<O>;
     cancel(): void;
   }
+
   type Event =
     | Policy.Event
-    | { id: string; type: 'clear' }
-    | { id: null; type: 'error'; error: Error };
+    | Event.Type<string, 'execution', 'clear'>
+    | Event.Type<null, 'exception', 'error', Error>;
 }
 
 export interface Storage<T> {
@@ -77,13 +79,28 @@ export declare namespace Connect {
   type State = 'opening' | 'open' | 'closing' | 'close';
 
   type Event =
-    | { id: string; type: State }
-    | { id: string; type: 'start' | 'stop' | 'cancel' }
-    | { id: string; type: 'warn' | 'error'; error: Error };
+    | Event.Type<string, 'state', State>
+    | Event.Type<string, 'execution', 'start' | 'stop' | 'cancel'>
+    | Event.Type<string, 'exception', 'warn' | 'error', Error>;
 
   interface Negotiation<T> {
     sub: string;
     state: State;
     connection: T;
   }
+}
+
+export declare namespace Event {
+  interface Type<
+    I extends string | null,
+    G extends Event.Group,
+    T extends string,
+    D = null
+  > {
+    id: I;
+    group: G;
+    type: T;
+    data: D;
+  }
+  type Group = 'execution' | 'exception' | 'state';
 }

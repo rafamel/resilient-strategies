@@ -37,7 +37,12 @@ export class ResilientPolicy implements Policy {
     const teardown = Util.onAbort(() => {
       if (events$.closed) return;
 
-      const event: Policy.Event = { id, type: 'cancel' };
+      const event: Policy.Event = {
+        id,
+        group: 'execution',
+        type: 'cancel',
+        data: null
+      };
       events$.next(event);
       this.#events$.next(event);
     }, signal);

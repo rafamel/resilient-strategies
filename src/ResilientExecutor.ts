@@ -101,7 +101,9 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
 
             const event: Executor.Event = {
               id: reference.request.id,
-              type: 'clear'
+              group: 'execution',
+              type: 'clear',
+              data: null
             };
             reference.events$.next(event);
             this.#events$.next(event);
@@ -111,8 +113,9 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
             if (reference) {
               const event: Executor.Event = {
                 id: reference.request.id,
+                group: 'exception',
                 type: 'warn',
-                error: ensure(err)
+                data: ensure(err)
               };
 
               reference.events$.next(event);
@@ -121,8 +124,9 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
             } else {
               this.#events$.next({
                 id: null,
+                group: 'exception',
                 type: 'error',
-                error: ensure(err)
+                data: ensure(err)
               });
             }
           }
@@ -150,8 +154,9 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
 
       const event: Executor.Event = {
         id,
+        group: 'exception',
         type: 'error',
-        error: ensure(err)
+        data: ensure(err)
       };
       events$.next(event);
       this.#events$.next(event);
@@ -160,7 +165,12 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
     const teardown = Util.onAbort(() => {
       if (events$.closed) return;
 
-      const event: Executor.Event = { id, type: 'cancel' };
+      const event: Executor.Event = {
+        id,
+        group: 'execution',
+        type: 'cancel',
+        data: null
+      };
       events$.next(event);
       this.#events$.next(event);
     }, controller.signal);
