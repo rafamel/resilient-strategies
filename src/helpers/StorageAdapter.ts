@@ -11,8 +11,8 @@ export declare namespace StorageAdapter {
 }
 
 export class StorageAdapter<T> {
-  #kv: Storage<T | string[]>;
-  public constructor(kv: Storage<T | string[]>) {
+  #kv: Storage<T>;
+  public constructor(kv: Storage<T>) {
     this.#kv = kv;
   }
   public async getIds(): Promise<string[]> {

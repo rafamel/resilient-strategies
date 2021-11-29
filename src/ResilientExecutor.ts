@@ -28,7 +28,7 @@ export class ResilientExecutor<I, O> implements Executor<I, O> {
   #events$: Push.Subject<Executor.Event>;
   public constructor(
     execute: (args: I, signal: AbortSignal) => Promise<O> | O,
-    storage: Storage<I | string[]> | null,
+    storage: Storage<I> | null,
     ...strategies: Strategy[]
   ) {
     this.#execute = execute;

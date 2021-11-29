@@ -47,9 +47,9 @@ export declare namespace Executor {
 }
 
 export interface Storage<T> {
-  get(query: Storage.Query): Promise<Storage.Response<T>>;
-  set(mutation: Storage.Mutation<T>): Promise<void>;
-  batch?(...mutations: Array<Storage.Mutation<T>>): Promise<void>;
+  get(query: Storage.Query): Promise<Storage.Response<T | string[]>>;
+  set(mutation: Storage.Mutation<T | string[]>): Promise<void>;
+  batch?(...mutations: Array<Storage.Mutation<T | string[]>>): Promise<void>;
 }
 export declare namespace Storage {
   type Query = { key: string };
