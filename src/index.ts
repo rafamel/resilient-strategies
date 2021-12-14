@@ -5,4 +5,5 @@ export * from './ResilientStrategy';
 export * from './ResilientPolicy';
 export * from './ResilientExecutor';
 export * from './ResilientConnect';
+
 // TODO: upgrade to native AbortController
