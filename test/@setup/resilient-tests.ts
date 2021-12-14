@@ -3,6 +3,7 @@ import { describe } from '@jest/globals';
 import { emptyTests } from './empty-tests';
 import { retryTests } from './retry-tests';
 import { bulkheadTests } from './bulkhead-tests';
+import { rateLimitTests } from './rate-limit-tests';
 import { circuitBreakerTests } from './circuit-breaker-tests';
 import { combineTests } from './combine-tests';
 import {
@@ -10,6 +11,7 @@ import {
   Strategy,
   RetryStrategy,
   BulkheadStrategy,
+  RateLimitStrategy,
   CircuitBreakerStrategy
 } from '../../src';
 
@@ -33,6 +35,11 @@ export function resilientTests(
   describe(`strategy: bulkhead`, () => {
     bulkheadTests(mode, (execute, options) => {
       return create(execute, new BulkheadStrategy(options));
+    });
+  });
+  describe(`strategy: rateLimit`, () => {
+    rateLimitTests(mode, (execute, options) => {
+      return create(execute, new RateLimitStrategy(options));
     });
   });
   describe(`strategy: circuitBreaker`, () => {
