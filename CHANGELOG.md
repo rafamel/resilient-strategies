@@ -1,3 +1,13 @@
+# [0.5.0](https://github.com/rafamel/resilient-strategies/compare/v0.4.0...v0.5.0) (2021-12-14)
+
+
+### Features
+
+* allow for AbortSignal to be null ([83e8b07](https://github.com/rafamel/resilient-strategies/commit/83e8b07b2f7bdaf6495cd22bc35f848323b40806))
+* **strategies:** add RateLimitStrategy ([0a1de66](https://github.com/rafamel/resilient-strategies/commit/0a1de66c7b43cf70d01151968db7fa02bb7e8ba9))
+
+
+
 # [0.4.0](https://github.com/rafamel/resilient-strategies/compare/v0.3.0...v0.4.0) (2021-11-29)
 
 
