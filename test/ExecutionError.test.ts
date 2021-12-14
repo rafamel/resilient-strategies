@@ -5,19 +5,19 @@ test(`instance.message: has expected message wo/ explicit message`, () => {
   const a = new ExecutionError({
     reason: 'cancel'
   });
-  expect(a.message).toMatchInlineSnapshot(`"Execution error: cancel"`);
+  expect(a.message).toMatchInlineSnapshot(`"Cancel execution error"`);
 
   const b = new ExecutionError({
     reason: 'cancel',
     message: undefined
   });
-  expect(b.message).toMatchInlineSnapshot(`"Execution error: cancel"`);
+  expect(b.message).toMatchInlineSnapshot(`"Cancel execution error"`);
 
   const c = new ExecutionError({
     reason: 'cancel',
     message: ''
   });
-  expect(c.message).toMatchInlineSnapshot(`"Execution error: cancel"`);
+  expect(c.message).toMatchInlineSnapshot(`"Cancel execution error"`);
 });
 test(`instance.message: has expected message w/ explicit message`, () => {
   const instance = new ExecutionError({
@@ -25,7 +25,7 @@ test(`instance.message: has expected message w/ explicit message`, () => {
     message: 'foo'
   });
   expect(instance.message).toMatchInlineSnapshot(
-    `"Execution error: cancel, foo"`
+    `"Cancel execution error: foo"`
   );
 });
 test(`instance.reason: is reason`, () => {

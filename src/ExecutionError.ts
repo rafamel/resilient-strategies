@@ -23,8 +23,10 @@ export class ExecutionError<
   public readonly reason: R;
   public constructor(params: ExecutionError.Params<R>) {
     super(
-      `Execution error: ${params.reason}` +
-        (params.message ? `, ${params.message}` : '')
+      params.reason[0].toUpperCase() +
+        params.reason.slice(1) +
+        ' execution error' +
+        (params.message ? `: ${params.message}` : '')
     );
     this.reason = params.reason;
   }
