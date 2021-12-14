@@ -3,14 +3,17 @@ import { AbortSignal } from 'abort-controller';
 import { Push } from 'multitude';
 
 export interface Strategy {
-  execute<O>(fn: NullaryFn<O | Promise<O>>, signal?: AbortSignal): Promise<O>;
+  execute<O>(
+    fn: NullaryFn<O | Promise<O>>,
+    signal?: AbortSignal | null
+  ): Promise<O>;
 }
 
 export interface Policy {
   events$: Push.Observable<Policy.Event>;
   execute<O>(
     fn: NullaryFn<O | Promise<O>>,
-    signal?: AbortSignal
+    signal?: AbortSignal | null
   ): Policy.Request<O>;
 }
 export declare namespace Policy {

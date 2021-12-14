@@ -19,7 +19,7 @@ export class ResilientPolicy implements Policy {
   }
   public execute<O>(
     fn: NullaryFn<O | Promise<O>>,
-    signal?: AbortSignal
+    signal?: AbortSignal | null
   ): Policy.Request<O> {
     const id = uuid();
     const events$ = new Subject<Policy.Event>();

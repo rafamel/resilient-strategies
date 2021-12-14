@@ -28,7 +28,7 @@ export class BulkheadStrategy implements Strategy {
   }
   public async execute<O>(
     fn: NullaryFn<O | Promise<O>>,
-    signal?: AbortSignal
+    signal?: AbortSignal | null
   ): Promise<O> {
     Util.throwIfAbort(signal);
     const options = this.#options;

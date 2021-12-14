@@ -9,7 +9,7 @@ export class Util {
   public static noop(): void {
     return undefined;
   }
-  public static onAbort(fn: NullaryFn, signal?: AbortSignal): NullaryFn {
+  public static onAbort(fn: NullaryFn, signal?: AbortSignal | null): NullaryFn {
     if (!signal) return Util.noop;
 
     if (signal.aborted) {
@@ -29,7 +29,7 @@ export class Util {
       };
     }
   }
-  public static throwIfAbort(signal?: AbortSignal): void {
+  public static throwIfAbort(signal?: AbortSignal | null): void {
     if (signal && signal.aborted) {
       throw new ExecutionError({ reason: 'cancel' });
     }
@@ -39,7 +39,7 @@ export class Util {
     strategy: Strategy,
     fn: NullaryFn<O | Promise<O>>,
     onEvent: UnaryFn<Policy.Event>,
-    signal?: AbortSignal
+    signal?: AbortSignal | null
   ): Promise<O> {
     let didStart = false;
     let errEnd: [any] | null = null;
